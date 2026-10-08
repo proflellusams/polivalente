@@ -3,253 +3,307 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Desafio da Redação — Treino ENEM</title>
+<title>Redação ENEM — Aprender e Jogar</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f7fb;color:#172033}
-button,input{font:inherit}
-.container{max-width:1050px;margin:auto;padding:20px}
-header{background:linear-gradient(135deg,#0f766e,#155e75);color:white;border-radius:24px;padding:28px;margin-bottom:18px;box-shadow:0 10px 30px #0002}
-header h1{margin:0 0 8px;font-size:clamp(25px,4vw,40px)}
-header p{margin:0;opacity:.9}
-.card{background:white;border:1px solid #e3e8ef;border-radius:22px;padding:24px;box-shadow:0 8px 25px #20304012;margin-bottom:18px}
-.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.badge{background:#e6fffb;color:#0f766e;padding:7px 11px;border-radius:999px;font-weight:700;font-size:13px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
-.stat{background:#f8fafc;border-radius:15px;padding:12px;text-align:center}
-.stat strong{display:block;font-size:22px}
-.progress{height:10px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:12px 0 20px}
-.progress span{display:block;height:100%;background:#14b8a6;transition:.3s}
-h2{margin-top:0}
-.option,.word,.match-btn{width:100%;text-align:left;border:2px solid #e5e7eb;background:white;border-radius:15px;padding:14px;margin:8px 0;cursor:pointer;transition:.15s}
-.option:hover,.word:hover,.match-btn:hover{border-color:#14b8a6;transform:translateY(-1px)}
-.option.correct,.word.correct,.match-btn.correct{border-color:#16a34a;background:#f0fdf4}
-.option.wrong,.word.wrong,.match-btn.wrong{border-color:#dc2626;background:#fef2f2}
-.feedback{margin-top:14px;padding:15px;border-radius:15px}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#172033}
+button{font:inherit}
+.wrap{max-width:1100px;margin:auto;padding:18px}
+header{background:linear-gradient(135deg,#164e63,#0f766e);color:#fff;border-radius:25px;padding:30px;box-shadow:0 12px 30px #0002;margin-bottom:18px}
+header h1{margin:0 0 8px;font-size:clamp(26px,4vw,42px)}
+header p{margin:0;line-height:1.5;max-width:800px}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+.nav button{border:0;background:#fff;padding:10px 13px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px #0001}
+.card{background:#fff;border:1px solid #e1e7ee;border-radius:22px;padding:24px;margin-bottom:18px;box-shadow:0 8px 25px #10203010}
+h2{margin-top:0;color:#164e63}
+h3{color:#0f766e}
+p,li{line-height:1.65}
+.lesson{border-left:6px solid #14b8a6;background:#f8fafc;padding:18px;border-radius:12px;margin:13px 0}
+.simple{background:#ecfeff;border:1px solid #a5f3fc;border-radius:15px;padding:15px;margin:14px 0}
+.example{background:#fffbeb;border-left:5px solid #f59e0b;padding:15px;border-radius:10px;margin:12px 0}
+.warning{background:#fff1f2;border:1px solid #fecdd3;border-radius:14px;padding:15px}
+.tip{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:15px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.game-card{border:2px solid #e2e8f0;border-radius:18px;padding:18px;background:#fff}
+.game-card h3{margin-top:0}
+.primary,.secondary,.choice,.word,.tile{border:0;border-radius:13px;padding:13px 16px;cursor:pointer;font-weight:700}
+.primary{background:#0f766e;color:#fff}
+.secondary{background:#e2e8f0;color:#172033}
+.choice,.word,.tile{width:100%;text-align:left;background:#fff;border:2px solid #e2e8f0;margin:7px 0}
+.choice:hover,.word:hover,.tile:hover{border-color:#0f766e}
+.choice.correct,.word.correct,.tile.correct{border-color:#16a34a;background:#f0fdf4}
+.choice.wrong,.word.wrong,.tile.wrong{border-color:#dc2626;background:#fff1f2}
+.feedback{padding:15px;border-radius:14px;margin-top:15px}
 .good{background:#ecfdf5;border:1px solid #86efac}
 .bad{background:#fff1f2;border:1px solid #fda4af}
-.next,.primary{border:0;background:#0f766e;color:white;font-weight:800;padding:13px 18px;border-radius:14px;cursor:pointer;margin-top:14px}
-.next:hover,.primary:hover{background:#115e59}
-.secondary{border:0;background:#e2e8f0;color:#172033;font-weight:700;padding:13px 18px;border-radius:14px;cursor:pointer;margin-top:14px}
-.homegrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.choice-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.small{font-size:14px;color:#64748b}
-.example{background:#f8fafc;border-left:5px solid #14b8a6;padding:14px;border-radius:10px;margin:12px 0}
-.sequence{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
-.sequence button{border:2px solid #cbd5e1;background:white;border-radius:12px;padding:12px;cursor:pointer}
-.sequence button.selected{border-color:#0f766e;background:#ccfbf1}
-.result{text-align:center}
-.bigscore{font-size:52px;font-weight:900;color:#0f766e}
-@media(max-width:700px){
- .container{padding:12px}
- .homegrid,.choice-row,.stats{grid-template-columns:1fr}
- header{padding:22px}
- .card{padding:18px}
-}
+.bar{height:10px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:12px 0}
+.bar span{display:block;height:100%;background:#14b8a6}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:#f8fafc;padding:12px;text-align:center;border-radius:14px}
+.stat strong{display:block;font-size:24px;color:#0f766e}
+.hidden{display:none}
+.big{font-size:50px;font-weight:900;color:#0f766e;text-align:center}
+@media(max-width:750px){.grid,.stats{grid-template-columns:1fr}.wrap{padding:10px}.card{padding:18px}}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="wrap">
 <header>
-<h1>🎯 Desafio da Redação</h1>
-<p>Treine para o ENEM com situações que fazem parte do seu dia a dia.</p>
+<h1>🧠 Redação ENEM: Entender para Escrever</h1>
+<p>Um material feito para quem ainda está aprendendo. Primeiro você entende a ideia com exemplos simples. Depois escolhe um jogo específico para treinar.</p>
 </header>
+<div class="nav">
+<button onclick="inicio()">🏠 Início</button>
+<button onclick="aula('estrutura')">🧱 Estrutura</button>
+<button onclick="aula('tese')">🎯 Tese</button>
+<button onclick="aula('argumento')">🔎 Argumentos</button>
+<button onclick="aula('conectivos')">🔗 Conectivos</button>
+<button onclick="aula('repertorio')">📚 Repertório</button>
+<button onclick="aula('intervencao')">🛠️ Intervenção</button>
+<button onclick="menuJogos()">🎮 Jogos</button>
+</div>
 <div id="app"></div>
 </div>
 
 <script>
 const app=document.getElementById('app');
 
-const TEMA="Os impactos do uso excessivo do celular na vida dos adolescentes";
-const DADOS=[
-{titulo:"🧠 Redação ENEM sem complicação",texto:"Na redação do ENEM, você precisa apresentar uma opinião sobre o tema, explicar essa opinião com bons argumentos e apresentar uma proposta de solução."},
-{titulo:"🧱 Estrutura básica",texto:"Uma forma simples de organizar a redação é usar quatro parágrafos: introdução, desenvolvimento 1, desenvolvimento 2 e conclusão."},
-{titulo:"🎯 Tese",texto:"A tese é a ideia principal que você vai defender. Ela precisa responder: qual é a minha opinião sobre o problema apresentado?"},
-{titulo:"🔎 Argumento",texto:"O argumento explica por que sua opinião faz sentido. Você pode usar fatos, pesquisas, leis, exemplos sociais, livros, filmes ou acontecimentos conhecidos."},
-{titulo:"🔗 Conectivos",texto:"Conectivos ajudam o leitor a acompanhar seu raciocínio. Exemplos: além disso, porém, porque, por isso, portanto e dessa forma."},
-{titulo:"🛠️ Proposta de intervenção",texto:"Na conclusão, apresente uma solução. Pense em: quem vai agir, o que será feito, como será feito e qual resultado se espera."}
+const AULAS={
+estrutura:{
+titulo:"🧱 1. Estrutura da redação",
+texto:`Pense na redação como uma casa. Uma casa precisa de partes organizadas para ficar firme. A redação também. Cada parágrafo tem uma função.`,
+blocos:[
+["Introdução","É a porta de entrada. Apresenta o assunto e mostra qual ideia você vai defender. Essa ideia principal é chamada de tese."],
+["Desenvolvimento 1","Aqui você explica o primeiro motivo que sustenta sua opinião. Não basta afirmar: é preciso explicar."],
+["Desenvolvimento 2","Apresenta outro motivo. O ideal é que ele acrescente uma ideia nova, em vez de repetir o primeiro."],
+["Conclusão","Retoma o problema e apresenta uma solução. No ENEM, essa solução é chamada de proposta de intervenção."]
+]},
+tese:{
+titulo:"🎯 2. Tese: o que você realmente pensa sobre o problema",
+texto:`Tese parece uma palavra difícil, mas a ideia é simples: é a posição que você vai defender. Imagine que alguém pergunte: “Qual é o principal problema relacionado a esse tema?” Sua resposta, quando bem organizada, pode virar sua tese.`,
+blocos:[
+["Pergunta","Tema: uso excessivo do celular por adolescentes. Pergunta: qual problema esse hábito pode causar?"],
+["Resposta fraca","“Celular é ruim.” É muito vaga. Não explica qual problema está sendo discutido."],
+["Resposta melhor","“O uso excessivo do celular pode prejudicar o sono e a concentração dos adolescentes.” Agora existem duas ideias que podem virar argumentos."],
+["Dica","Uma boa tese ajuda a planejar os dois parágrafos de desenvolvimento. Se você disser “sono e concentração”, já sabe dois caminhos para continuar."]
+]},
+argumento:{
+titulo:"🔎 3. Argumento: não basta dizer, é preciso explicar",
+texto:`Argumentar é responder à pergunta “por que isso acontece?” ou “como isso prejudica a sociedade?”. O aluno não precisa escrever palavras difíceis. Precisa fazer o leitor entender a relação entre sua ideia e o problema.`,
+blocos:[
+["Afirmação","“O uso excessivo do celular pode prejudicar os estudos.”"],
+["Pergunta","Por que isso acontece?"],
+["Explicação","“Quando o estudante passa várias horas alternando entre vídeos, mensagens e redes sociais, sobra menos tempo e atenção para as atividades escolares.”"],
+["Resultado","Agora existe uma relação clara: uso excessivo → menos tempo/atenção → prejuízo aos estudos."]
+]},
+conectivos:{
+titulo:"🔗 4. Conectivos: as pontes do texto",
+texto:`Conectivos são palavras ou expressões que mostram a relação entre as ideias. Pense neles como placas de trânsito: uma placa mostra se você deve seguir, mudar de direção, parar ou tomar cuidado. No texto, o conectivo mostra ao leitor como uma ideia se relaciona com a outra.`,
+blocos:[
+["Somar","Além disso, também, ainda, da mesma forma. Usados quando você acrescenta uma ideia."],
+["Contrastar","Porém, contudo, entretanto. Usados quando uma ideia faz oposição à anterior."],
+["Explicar causa","Porque, pois, já que, visto que. Mostram motivo."],
+["Mostrar consequência","Por isso, portanto, dessa forma, assim. Mostram resultado."],
+["Exemplo","“O celular facilita a comunicação. Porém, o uso exagerado pode prejudicar o sono.” Aqui há contraste."]
+]},
+repertorio:{
+titulo:"📚 5. Repertório: conhecimento que ajuda seu argumento",
+texto:`Repertório é um conhecimento que você traz para fortalecer sua explicação. Ele não existe para deixar o texto “bonito”. Ele precisa ajudar a provar ou explicar sua ideia.`,
+blocos:[
+["Pode ser","Dados de pesquisas, leis, fatos históricos, livros, filmes, documentários, conceitos de pensadores e acontecimentos sociais conhecidos."],
+["Não basta citar","Escrever apenas “Segundo uma pesquisa...” não é suficiente se você não explica o que aquela informação prova."],
+["Exemplo","“Uma pesquisa sobre o uso de telas entre jovens mostra que o excesso pode estar relacionado a alterações no sono. Esse dado ajuda a mostrar que o problema não é apenas falta de disciplina, mas pode afetar a rotina e o bem-estar.”"],
+["Regra simples","Pergunte: “Esse conhecimento tem relação com meu argumento? Eu expliquei por que ele é importante?”"]
+]},
+intervencao:{
+titulo:"🛠️ 6. Proposta de intervenção: como transformar o problema em solução",
+texto:`Na conclusão, você não precisa inventar uma solução milagrosa. Precisa apresentar uma proposta possível e bem explicada. Pense em uma pessoa ou instituição que poderia agir e diga exatamente o que ela poderia fazer.`,
+blocos:[
+["Quem?","Agente: escola, prefeitura, Ministério da Educação, família, meios de comunicação etc."],
+["O quê?","Ação: realizar oficinas, criar campanhas, ampliar projetos, oferecer orientação etc."],
+["Como?","Meio: palestras, redes sociais, atividades escolares, materiais informativos, parcerias etc."],
+["Para quê?","Finalidade: reduzir o problema, orientar os jovens, melhorar a rotina etc."],
+["Detalhamento","Acrescente uma informação que deixe a proposta mais concreta. Exemplo: indicar público, frequência ou conteúdo da ação."]
+]}
+};
+
+const JOGOS=[
+{nome:"Jogo 1 — Detetive da Tese",tipo:"quiz",sobre:"Aprender a identificar uma opinião clara.",
+q:"Tema: uso excessivo do celular por adolescentes. Qual frase pode funcionar melhor como tese?",
+ops:[
+["O celular está presente na sociedade atual.",false],
+["O uso excessivo do celular pode prejudicar o sono e a concentração dos adolescentes.",true],
+["Existem celulares de diferentes marcas.",false],
+["Muitos adolescentes possuem celular.",false]
+],exp:"A frase apresenta uma posição clara e já aponta dois problemas que podem ser desenvolvidos: sono e concentração."},
+{nome:"Jogo 2 — Argumento ou Frase Solta?",tipo:"quiz",sobre:"Diferenciar uma afirmação de uma ideia explicada.",
+q:"Qual opção apresenta uma ideia acompanhada de explicação?",
+ops:[
+["O celular atrapalha os estudos.",false],
+["O celular é muito usado pelos jovens.",false],
+["O uso excessivo pode atrapalhar os estudos porque reduz o tempo de atenção dedicado às atividades escolares.",true],
+["A tecnologia faz parte da nossa vida.",false]
+],exp:"A resposta não apenas afirma. Ela explica como o problema pode acontecer."},
+{nome:"Jogo 3 — Ponte das Ideias",tipo:"quiz",sobre:"Escolher conectivos pelo sentido.",
+q:"“O celular pode ajudar nos estudos. ________, quando usado sem controle, também pode distrair o estudante.”",
+ops:[["Portanto",false],["Porém",true],["Por isso",false],["Além disso",false]],
+exp:"A segunda frase apresenta uma ideia contrária à primeira. Por isso, “porém” funciona melhor."},
+{nome:"Jogo 4 — Repertório na Prática",tipo:"quiz",sobre:"Reconhecer conhecimento que pode fortalecer a argumentação.",
+q:"Qual opção é um repertório mais adequado?",
+ops:[
+["Minha opinião é que isso acontece muito.",false],
+["Todo mundo sabe que adolescente usa celular.",false],
+["Um dado de pesquisa confiável sobre o tempo de uso de telas por adolescentes.",true],
+["Meu amigo disse que celular faz mal.",false]
+],exp:"O dado de uma fonte confiável pode ajudar a sustentar a argumentação, desde que seja relacionado e explicado."},
+{nome:"Jogo 5 — Causa e Efeito",tipo:"quiz",sobre:"Construir raciocínio lógico.",
+q:"Qual alternativa apresenta causa e consequência?",
+ops:[
+["Os jovens usam celular todos os dias.",false],
+["O celular possui aplicativos diferentes.",false],
+["O uso do celular até tarde pode reduzir o tempo de sono e prejudicar a atenção no dia seguinte.",true],
+["Existem celulares caros e baratos.",false]
+],exp:"A causa é usar o celular até tarde. As consequências são dormir menos e ter dificuldade de atenção."},
+{nome:"Jogo 6 — Organize a Redação",tipo:"ordem",sobre:"Entender a função de cada parágrafo.",
+q:"Clique nos blocos na ordem em que eles devem aparecer.",
+blocos:["Introdução — tema e tese","Desenvolvimento 1 — primeiro argumento","Desenvolvimento 2 — segundo argumento","Conclusão — proposta de intervenção"],
+exp:"A estrutura básica trabalhada aqui é introdução, desenvolvimento 1, desenvolvimento 2 e conclusão."},
+{nome:"Jogo 7 — Verdadeiro ou Falso",tipo:"vf",sobre:"Verificar conhecimentos básicos.",
+q:"“Uma conclusão completa pode simplesmente dizer: ‘O governo precisa resolver isso’.”",
+resposta:false,exp:"Falso. A frase é vaga. É preciso explicar quem vai agir, o que será feito, como e com qual finalidade."},
+{nome:"Jogo 8 — Qual solução é melhor?",tipo:"quiz",sobre:"Treinar proposta de intervenção.",
+q:"Qual proposta é mais completa para o problema do uso excessivo do celular?",
+ops:[
+["É preciso melhorar essa situação.",false],
+["Os adolescentes devem ter mais responsabilidade.",false],
+["As escolas podem promover oficinas sobre uso consciente da tecnologia, com orientações sobre tempo de tela e sono, para ajudar os estudantes a equilibrar estudo e lazer.",true],
+["O celular deveria ser proibido para todos os adolescentes.",false]
+],exp:"A proposta apresenta agente, ação, meio/detalhamento e finalidade, além de ser mais concreta e possível."},
+{nome:"Jogo 9 — Linguagem Formal",tipo:"quiz",sobre:"Identificar linguagem inadequada para a redação.",
+q:"Qual frase deve ser evitada em uma redação formal?",
+ops:[
+["Além disso, o uso excessivo pode prejudicar a rotina escolar.",false],
+["Nesse contexto, torna-se necessário orientar os estudantes.",false],
+["Tipo, o celular acaba com tudo e é muito ruim, né?",true],
+["Por isso, medidas educativas podem contribuir para reduzir o problema.",false]
+],exp:"“Tipo” e “né” são marcas de linguagem informal. A redação deve usar linguagem adequada à situação formal."},
+{nome:"Jogo 10 — Situação Real",tipo:"quiz",sobre:"Transformar uma situação cotidiana em argumento.",
+q:"Ana fica até 2 horas da manhã nas redes sociais e chega cansada à escola. Qual argumento pode nascer dessa situação?",
+ops:[
+["As redes sociais têm muitos aplicativos.",false],
+["O uso noturno e excessivo das redes pode prejudicar o sono e afetar a atenção durante as aulas.",true],
+["Todos os adolescentes fazem isso.",false],
+["A escola deveria acabar com a internet.",false]
+],exp:"A situação fornece um exemplo concreto de causa e consequência que pode ser transformado em argumento."},
+{nome:"Jogo 11 — Qual conclusão fecha melhor?",tipo:"quiz",sobre:"Aprender a concluir sem repetir tudo.",
+q:"Qual frase funciona melhor como fechamento?",
+ops:[
+["Foi isso que eu quis dizer.",false],
+["Portanto, é necessário promover o uso equilibrado da tecnologia para que seus benefícios não sejam prejudicados pelo excesso.",true],
+["O celular existe e sempre existirá.",false],
+["Não tenho mais nada para falar.",false]
+],exp:"A frase retoma a ideia principal e aponta a necessidade de equilíbrio, encerrando o raciocínio."},
+{nome:"Jogo 12 — Desafio Final",tipo:"quiz",sobre:"Reunir os conhecimentos.",
+q:"Qual conjunto apresenta uma boa lógica para uma redação?",
+ops:[
+["Tema → opinião → argumentos explicados → conclusão com solução.",true],
+["Tema → opinião → repetir a mesma frase → fim.",false],
+["Tema → contar uma história pessoal → terminar sem solução.",false],
+["Tema → usar palavras difíceis → repetir o tema.",false]
+],exp:"A redação precisa ter organização. Você apresenta o tema, defende uma tese, desenvolve argumentos e conclui com uma proposta adequada."}
 ];
 
-const GAMES=[
-{tipo:"quiz",titulo:"🎮 Jogo 1 — Qual ideia combina?",q:"Qual frase apresenta uma tese adequada para o tema?",ops:[
-["O celular existe há muitos anos e possui vários modelos.",false],
-["O uso excessivo do celular pode prejudicar a rotina dos adolescentes, especialmente o sono e a concentração nos estudos.",true],
-["Os celulares são vendidos em lojas e pela internet.",false],
-["Muitos adolescentes gostam de assistir a vídeos no celular.",false]
-],exp:"A alternativa apresenta uma opinião clara e aponta dois problemas que podem ser desenvolvidos: sono e concentração."},
+let jogoAtual=0,pontos=0,acertos=0,selecionados=[],travado=false;
 
-{tipo:"quiz",titulo:"🕵️ Jogo 2 — Caça ao problema",q:"Qual trecho apresenta um problema de linguagem para uma redação formal?",ops:[
-["Além disso, o uso excessivo das redes sociais pode diminuir o tempo dedicado aos estudos.",false],
-["Porém, muitos estudantes ainda não percebem os efeitos desse hábito.",false],
-["Tipo, o celular acaba com a vida da pessoa e é muito ruim, né?",true],
-["Por isso, é importante buscar equilíbrio no uso da tecnologia.",false]
-],exp:"Expressões como “tipo” e “né”, além do tom exagerado, deixam o trecho inadequado para a linguagem formal da redação."},
-
-{tipo:"quiz",titulo:"🔗 Jogo 3 — Escolha o conectivo",q:"Complete: “O celular facilita a comunicação. ________, quando usado em excesso, pode atrapalhar o sono.”",ops:[
-["Além disso",false],["Porém",true],["Portanto",false],["Por isso",false]
-],exp:"“Porém” indica oposição: o celular tem uma vantagem, mas também pode trazer um problema quando usado em excesso."},
-
-{tipo:"quiz",titulo:"📚 Jogo 4 — Repertório ou opinião?",q:"Qual opção funciona melhor como repertório para desenvolver uma redação?",ops:[
-["Minha mãe acha que celular faz mal.",false],
-["Todo mundo sabe que adolescente fica muito no celular.",false],
-["Uma pesquisa ou dado de fonte confiável sobre o tempo de uso de telas entre adolescentes.",true],
-["Eu vi um comentário em uma rede social.",false]
-],exp:"Um repertório forte vem de uma fonte identificável e confiável e precisa ser relacionado ao argumento."},
-
-{tipo:"quiz",titulo:"💡 Jogo 5 — Causa e consequência",q:"Qual alternativa apresenta uma relação de causa e consequência?",ops:[
-["Os adolescentes usam celular e também estudam.",false],
-["O uso do celular é comum entre os jovens.",false],
-["Quando o celular é usado até tarde, o adolescente pode dormir menos e ter dificuldade para se concentrar no dia seguinte.",true],
-["Celular, escola, família e internet fazem parte da rotina.",false]
-],exp:"A alternativa mostra uma causa (uso até tarde) e consequências (menos sono e dificuldade de concentração)."},
-
-{tipo:"ordem",titulo:"🧩 Jogo 6 — Monte a redação",q:"Clique nos blocos na ordem correta para formar a estrutura básica da redação.",blocos:[
-"Introdução: apresentar o tema e a tese.",
-"Desenvolvimento 1: explicar o primeiro argumento.",
-"Desenvolvimento 2: apresentar outro argumento.",
-"Conclusão: propor uma solução."
-],exp:"A sequência mais comum é: introdução → desenvolvimento 1 → desenvolvimento 2 → conclusão."},
-
-{tipo:"verdadeiro",titulo:"✅ Jogo 7 — Verdadeiro ou falso",q:"“Na conclusão, basta escrever: ‘O governo precisa resolver esse problema’.”",resposta:false,exp:"Falso. A proposta precisa ser mais detalhada: quem fará, o que será feito, como e com qual finalidade."},
-
-{tipo:"verdadeiro",titulo:"⚡ Jogo 8 — Verdadeiro ou falso",q:"“Uma redação pode ter bons argumentos, mas, se fugir do tema, terá um grande problema na avaliação.”",resposta:true,exp:"Verdadeiro. Compreender e desenvolver corretamente o tema é fundamental."},
-
-{tipo:"quiz",titulo:"📱 Jogo 9 — Situação do dia a dia",q:"João chega da escola, fica várias horas no celular, dorme muito tarde e no dia seguinte não consegue prestar atenção na aula. Qual argumento pode ser usado?",ops:[
-["O celular possui várias marcas diferentes.",false],
-["O uso sem controle pode prejudicar o sono e a concentração dos estudantes.",true],
-["Todo adolescente deveria abandonar a tecnologia.",false],
-["A escola não tem nenhuma relação com o problema.",false]
-],exp:"O exemplo de João permite discutir o uso sem equilíbrio e seus efeitos na rotina escolar."},
-
-{tipo:"quiz",titulo:"🛠️ Jogo 10 — Complete a solução",q:"Qual proposta é mais completa?",ops:[
-["O governo precisa fazer alguma coisa.",false],
-["Os adolescentes precisam mudar.",false],
-["As escolas devem realizar oficinas sobre uso consciente da tecnologia, com orientações práticas sobre tempo de tela e sono, para ajudar os estudantes a equilibrar estudo e lazer.",true],
-["O celular deve ser proibido para todos.",false]
-],exp:"A proposta apresenta agente, ação, meio/detalhamento e finalidade, sem propor uma solução exagerada ou inviável."},
-
-{tipo:"quiz",titulo:"✍️ Jogo 11 — Melhor frase",q:"Qual frase é mais adequada para iniciar um desenvolvimento?",ops:[
-["Eu acho isso muito ruim.",false],
-["Nesse contexto, o excesso de tempo diante das telas pode afetar a organização da rotina escolar.",true],
-["Tipo, isso acontece demais.",false],
-["Todo mundo concorda comigo.",false]
-],exp:"A frase apresenta uma ideia que pode ser desenvolvida com explicações e argumentos e usa linguagem adequada."},
-
-{tipo:"quiz",titulo:"🏁 Jogo 12 — Escolha a conclusão",q:"Qual conclusão fecha melhor uma redação sobre o uso excessivo do celular?",ops:[
-["Enfim, foi isso que eu quis dizer.",false],
-["Portanto, o uso do celular deve ser equilibrado para que a tecnologia continue sendo útil sem prejudicar a saúde e os estudos dos adolescentes.",true],
-["Celular é muito importante e pronto.",false],
-["Não tenho mais nada para falar sobre o assunto.",false]
-],exp:"A conclusão retoma a ideia principal e apresenta uma direção de solução, mantendo linguagem formal."}
-];
-
-let state={fase:0,pontos:0,acertos:0,respondido:false,selecionados:[]};
-
-function home(){
-state={fase:0,pontos:0,acertos:0,respondido:false,selecionados:[]};
+function inicio(){
 app.innerHTML=`
-<div class="homegrid">
 <div class="card">
-<div class="badges"><span class="badge">ENEM</span><span class="badge">Português</span><span class="badge">Treino</span></div>
-<h2>📱 Tema da missão</h2>
-<h3>${TEMA}</h3>
-<p>Um tema simples e próximo da realidade dos estudantes. A ideia é aprender a construir argumentos usando situações que eles conhecem: celular, estudos, sono, redes sociais e rotina.</p>
-<button class="primary" onclick="aula()">📖 Aprender primeiro</button>
-<button class="secondary" onclick="comecar()">🚀 Começar os jogos</button>
+<h2>👋 Como usar este material</h2>
+<p>Este material foi pensado para alunos que ainda não dominam redação. Por isso, <b>não começa pelo jogo</b>. Primeiro explica a ideia com palavras simples e exemplos do cotidiano.</p>
+<div class="simple"><b>Exemplo de pensamento:</b> “Se eu quero dizer que o celular prejudica os estudos, preciso explicar por quê. O que acontece com o estudante? Ele perde tempo? Dorme menos? Se distrai? É isso que transforma uma opinião em argumento.”</div>
+<h3>📚 Parte 1 — Aprenda</h3>
+<div class="grid">
+${Object.keys(AULAS).map(k=>`<div class="game-card"><h3>${AULAS[k].titulo}</h3><p>${AULAS[k].texto}</p><button class="primary" onclick="aula('${k}')">Estudar este assunto</button></div>`).join('')}
+</div>
 </div>
 <div class="card">
-<h2>🎲 Jogos diferentes</h2>
-<p>O treinamento mistura desafios para evitar que a atividade fique repetitiva:</p>
-<ul>
-<li>Escolha a melhor resposta</li>
-<li>Caça ao erro</li>
-<li>Complete com conectivos</li>
-<li>Monte a estrutura da redação</li>
-<li>Verdadeiro ou falso</li>
-<li>Situações do cotidiano</li>
-<li>Escolha a melhor proposta</li>
-</ul>
-<div class="example"><b>Objetivo:</b> aprender enquanto joga, errando e entendendo o motivo da resposta.</div>
-</div>
+<h2>🎮 Parte 2 — Escolha o tipo de jogo</h2>
+<p>Os jogos ficam <b>separados</b>. Assim você pode escolher apenas o tipo de treino que quer trabalhar em cada aula.</p>
+<button class="primary" onclick="menuJogos()">Abrir menu de jogos</button>
 </div>`;
 }
 
-function aula(){
+function aula(k){
+const a=AULAS[k];
 app.innerHTML=`<div class="card">
-<h2>📖 Aula rápida</h2>
-<p class="small">Antes de jogar, veja o essencial.</p>
-${DADOS.map((d,i)=>`<div class="example"><b>${d.titulo}</b><p>${d.texto}</p>${i===2?'<p><b>Exemplo:</b> “O uso exagerado do celular pode prejudicar a concentração dos estudantes.”</p>':''}</div>`).join('')}
-<button class="primary" onclick="comecar()">🎮 Agora quero jogar</button>
-<button class="secondary" onclick="home()">⬅ Voltar</button>
+<h2>${a.titulo}</h2>
+<p>${a.texto}</p>
+${a.blocos.map(b=>`<div class="lesson"><h3>${b[0]}</h3><p>${b[1]}</p></div>`).join('')}
+<div class="tip"><b>🗣️ Pense como aluno:</b> você não precisa decorar palavras difíceis. Precisa entender a função daquela parte e conseguir explicar a ideia com clareza.</div>
+<button class="primary" onclick="menuJogos()">🎮 Treinar este conteúdo</button>
+<button class="secondary" onclick="inicio()">🏠 Voltar</button>
 </div>`;
 }
 
-function comecar(){
-state={fase:0,pontos:0,acertos:0,respondido:false,selecionados:[]};
-mostrar();
-}
-
-function topo(g){
-return `<div class="stats">
-<div class="stat"><strong>${state.pontos}</strong><span>pontos</span></div>
-<div class="stat"><strong>${state.acertos}</strong><span>acertos</span></div>
-<div class="stat"><strong>${state.fase+1}</strong><span>questão</span></div>
-<div class="stat"><strong>${GAMES.length}</strong><span>total</span></div>
+function menuJogos(){
+app.innerHTML=`<div class="card">
+<h2>🎮 Central de Jogos</h2>
+<p>Escolha um tipo de desafio. Cada jogo trabalha uma habilidade diferente.</p>
+<div class="grid">
+<div class="game-card"><h3>🔍 Detetive da escrita</h3><p>Identifique tese, argumento e linguagem adequada.</p><button class="primary" onclick="iniciar(0)">Jogar</button></div>
+<div class="game-card"><h3>🔗 Conectivos</h3><p>Treine as palavras que ligam as ideias.</p><button class="primary" onclick="iniciar(2)">Jogar</button></div>
+<div class="game-card"><h3>📚 Repertório</h3><p>Aprenda a escolher conhecimento que fortalece o argumento.</p><button class="primary" onclick="iniciar(3)">Jogar</button></div>
+<div class="game-card"><h3>🧩 Organização</h3><p>Monte a estrutura da redação na ordem correta.</p><button class="primary" onclick="iniciar(5)">Jogar</button></div>
+<div class="game-card"><h3>🛠️ Proposta de intervenção</h3><p>Escolha soluções completas e possíveis.</p><button class="primary" onclick="iniciar(7)">Jogar</button></div>
+<div class="game-card"><h3>🏆 Desafio completo</h3><p>Faça todos os desafios misturados.</p><button class="primary" onclick="iniciar(0,true)">Jogar tudo</button></div>
 </div>
-<div class="progress"><span style="width:${state.fase/GAMES.length*100}%"></span></div>`;
+</div>`;
 }
 
-function mostrar(){
-if(state.fase>=GAMES.length){resultado();return}
-state.respondido=false;state.selecionados=[];
-const g=GAMES[state.fase];
+let lista=[];
+function iniciar(indice,tudo=false){
+lista=tudo?JOGOS:[JOGOS[indice],...JOGOS.slice(indice+1,Math.min(indice+4,JOGOS.length))];
+jogoAtual=0;pontos=0;acertos=0;selecionados=[];mostrarJogo();
+}
+
+function mostrarJogo(){
+if(jogoAtual>=lista.length){resultado();return}
+travado=false;selecionados=[];
+const g=lista[jogoAtual];
 let body='';
-if(g.tipo==="quiz") body=g.ops.map((o,i)=>`<button class="option" onclick="responder(${i})">${o[0]}</button>`).join('');
-if(g.tipo==="verdadeiro") body=`<div class="choice-row"><button class="option" onclick="responder(true)">✅ Verdadeiro</button><button class="option" onclick="responder(false)">❌ Falso</button></div>`;
-if(g.tipo==="ordem") body=`<p class="small">Clique na sequência correta. Cada bloco selecionado ficará marcado.</p><div id="seq" class="sequence">${g.blocos.map((b,i)=>`<button onclick="selecionar(${i})" id="b${i}">${b}</button>`).join('')}</div><button class="primary" onclick="verificarOrdem()">Confirmar sequência</button>`;
-app.innerHTML=`<div class="card">${topo(g)}<div class="badges"><span class="badge">${g.titulo}</span></div><h2>${g.q}</h2>${body}<div id="feedback"></div></div>`;
+if(g.tipo==="quiz")body=g.ops.map((o,i)=>`<button class="choice" onclick="responder(${i})">${o[0]}</button>`).join('');
+if(g.tipo==="vf")body=`<div class="grid"><button class="choice" onclick="responder(true)">✅ Verdadeiro</button><button class="choice" onclick="responder(false)">❌ Falso</button></div>`;
+if(g.tipo==="ordem")body=`<p class="small">Clique nos blocos na ordem correta.</p>${g.blocos.map((b,i)=>`<button class="tile" id="tile${i}" onclick="selecionar(${i})">${b}</button>`).join('')}<button class="primary" onclick="confirmarOrdem()">Confirmar</button>`;
+app.innerHTML=`<div class="card">
+<div class="stats"><div class="stat"><strong>${pontos}</strong>pontos</div><div class="stat"><strong>${acertos}</strong>acertos</div><div class="stat"><strong>${jogoAtual+1}</strong>/${lista.length}</div></div>
+<div class="bar"><span style="width:${jogoAtual/lista.length*100}%"></span></div>
+<div class="simple"><b>${g.nome}</b><br><span class="small">${g.sobre}</span></div>
+<h2>${g.q}</h2>${body}<div id="fb"></div>
+</div>`;
 }
 
-function responder(valor){
-if(state.respondido)return;
-const g=GAMES[state.fase];
-let certo;
-if(g.tipo==="quiz") certo=g.ops[valor][1];
-else certo=valor===g.resposta;
+function responder(v){
+if(travado)return;
+const g=lista[jogoAtual];
+let certo=g.tipo==="quiz"?g.ops[v][1]:v===g.resposta;
 finalizar(certo,g.exp);
 }
-
 function selecionar(i){
-if(state.respondido)return;
-if(state.selecionados.includes(i))return;
-state.selecionados.push(i);
-document.getElementById('b'+i).classList.add('selected');
+if(travado||selecionados.includes(i))return;
+selecionados.push(i);document.getElementById("tile"+i).classList.add("correct");
 }
-
-function verificarOrdem(){
-if(state.respondido)return;
-const g=GAMES[state.fase];
-const certo=state.selecionados.join(',')==="0,1,2,3";
-finalizar(certo,g.exp);
-}
-
+function confirmarOrdem(){finalizar(selecionados.join(",")==="0,1,2,3",lista[jogoAtual].exp)}
 function finalizar(certo,exp){
-state.respondido=true;
-if(certo){state.acertos++;state.pontos+=100}
-document.querySelectorAll('.option').forEach(b=>b.disabled=true);
-const fb=document.getElementById('feedback');
-fb.className='feedback '+(certo?'good':'bad');
-fb.innerHTML=`<b>${certo?'✅ Muito bem! +100 pontos':'❌ Ainda não. Vamos aprender com o erro.'}</b><p>${exp}</p><button class="next" onclick="proxima()">${state.fase===GAMES.length-1?'🏁 Ver resultado':'➡ Próximo desafio'}</button>`;
+travado=true;if(certo){pontos+=100;acertos++}
+document.querySelectorAll(".choice,.tile").forEach(x=>x.disabled=true);
+document.getElementById("fb").innerHTML=`<div class="feedback ${certo?'good':'bad'}"><b>${certo?'✅ Acertou! +100 pontos':'❌ Vamos entender o erro'}</b><p>${exp}</p><button class="primary" onclick="proximo()">${jogoAtual===lista.length-1?'🏁 Resultado':'➡ Próximo'}</button></div>`;
 }
-
-function proxima(){state.fase++;mostrar()}
-
+function proximo(){jogoAtual++;mostrarJogo()}
 function resultado(){
-const nota=Math.round(state.acertos/GAMES.length*1000);
-let msg=nota>=800?"🔥 Excelente! Você já está dominando a base.":nota>=600?"👏 Muito bom! Mais alguns treinos e você vai avançar bastante.":"💪 Bom começo! Revise a aula e tente novamente.";
-app.innerHTML=`<div class="card result"><h2>🏆 Treino concluído!</h2><div class="bigscore">${nota}</div><p><b>Nota de treino</b></p><p>Você acertou <b>${state.acertos} de ${GAMES.length}</b> desafios e fez <b>${state.pontos} pontos</b>.</p><h3>${msg}</h3><div class="example"><b>Importante:</b> essa nota é apenas uma forma divertida de acompanhar o treino. Ela não representa a nota oficial do ENEM.</div><button class="primary" onclick="comecar()">🔁 Jogar novamente</button><button class="secondary" onclick="aula()">📖 Rever a aula</button><button class="secondary" onclick="home()">🏠 Início</button></div>`;
+const nota=Math.round(acertos/lista.length*1000);
+app.innerHTML=`<div class="card"><h2>🏆 Resultado do treino</h2><div class="big">${nota}</div><p style="text-align:center"><b>Nota de treino</b></p><p style="text-align:center">Você acertou <b>${acertos} de ${lista.length}</b> desafios.</p><div class="tip"><b>O mais importante:</b> não olhe apenas para a pontuação. Leia a explicação de cada questão. É ela que transforma o jogo em aprendizagem.</div><button class="primary" onclick="menuJogos()">🎮 Escolher outro jogo</button><button class="secondary" onclick="inicio()">🏠 Início</button></div>`;
 }
-home();
+inicio();
 </script>
 </body>
 </html>
