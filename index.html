@@ -14,9 +14,9 @@ body{background:linear-gradient(160deg,#1e1b4b,#312e81 50%,#0f172a);min-height:1
 <body class="text-slate-800 font-sans p-3 sm:p-6">
 <div class="max-w-3xl mx-auto">
   <h1 class="text-center text-white font-extrabold text-2xl sm:text-3xl mb-1">🏆 Jornada rumo à <span class="text-amber-400">Nota 1000</span></h1>
-  <p class="text-center text-indigo-200 text-sm mb-4">Treino da Redação do ENEM · Competências C1 a C5</p>
+  <p class="text-center text-indigo-200 text-sm mb-4">Aprenda e treine a Redação do ENEM</p>
   <div id="app"></div>
-  <p class="text-center text-indigo-300 text-xs mt-6">Material de estudo baseado na Matriz de Referência e na Cartilha do Participante (INEP). As notas exibidas são ilustrativas.</p>
+  <p class="text-center text-indigo-300 text-xs mt-6">Material de estudo baseado na Matriz de Referência e na Cartilha do Participante (INEP). As notas do jogo são ilustrativas.</p>
 </div>
 
 <script>
@@ -26,74 +26,157 @@ const sh = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j =
 const KEY = 'enemRankingV1';
 const getRank = () => { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { return []; } };
 const setRank = r => { try { localStorage.setItem(KEY, JSON.stringify(r)); } catch (e) {} };
+let NOME = '';
 
 const TEMA = 'Desafios para o enfrentamento da invisibilidade do trabalho de cuidado realizado pela mulher no Brasil';
 
+/* ---------- AULA RÁPIDA ---------- */
+const AULA = [
+ { t: '📝 O que é a redação do ENEM?', h: `
+  <p>É um texto <b>dissertativo-argumentativo</b>. Isso quer dizer que você <b>defende uma opinião</b> sobre um tema e apresenta <b>argumentos</b> para convencer o leitor.</p>
+  <div class="grid grid-cols-3 gap-2 text-center my-3">
+    <div class="bg-indigo-50 rounded-xl p-3"><div class="text-2xl font-extrabold text-indigo-700">1000</div><div class="text-xs">pontos no máximo</div></div>
+    <div class="bg-indigo-50 rounded-xl p-3"><div class="text-2xl font-extrabold text-indigo-700">30</div><div class="text-xs">linhas no máximo</div></div>
+    <div class="bg-indigo-50 rounded-xl p-3"><div class="text-2xl font-extrabold text-indigo-700">5</div><div class="text-xs">competências</div></div>
+  </div>
+  <p>O tema aparece na prova e você precisa falar <b>exatamente dele</b>. Texto com 7 linhas ou menos também é considerado insuficiente.</p>
+  <div class="bg-red-50 border border-red-300 rounded-xl p-3 mt-3 text-sm"><b>⚠️ O que zera a redação:</b> fugir totalmente do tema, não fazer um texto dissertativo-argumentativo ou escrever muito pouco.</div>` },
+ { t: '🎯 As 5 competências', h: `
+  <p class="mb-2">A prova dá até <b>200 pontos</b> em cada competência (5 × 200 = 1000). Em palavras simples:</p>
+  <ul class="space-y-2 text-sm">
+   <li class="bg-indigo-50 rounded-xl p-3"><b>C1 · Escrever bem:</b> usar português correto (ortografia, concordância, crase, pontuação).</li>
+   <li class="bg-indigo-50 rounded-xl p-3"><b>C2 · Entender o tema:</b> falar do tema certo, seguir o formato da redação e usar <b>repertório</b> (conhecimento de fora).</li>
+   <li class="bg-indigo-50 rounded-xl p-3"><b>C3 · Organizar as ideias:</b> ter uma opinião clara e defendê-la com argumentos bem explicados.</li>
+   <li class="bg-indigo-50 rounded-xl p-3"><b>C4 · Ligar as ideias:</b> usar conectivos (além disso, portanto...) para o texto fluir.</li>
+   <li class="bg-indigo-50 rounded-xl p-3"><b>C5 · Propor solução:</b> terminar com uma <b>proposta de intervenção</b> completa, que respeite os direitos humanos.</li>
+  </ul>` },
+ { t: '🧱 A estrutura: 4 parágrafos', h: `
+  <p class="mb-2">Uma boa organização para começar é usar <b>4 parágrafos</b>:</p>
+  <div class="space-y-2 text-sm">
+   <div class="border-l-4 border-sky-500 bg-sky-50 rounded p-3"><b>1º · Introdução:</b> apresenta o tema e a sua opinião (a <b>tese</b>).</div>
+   <div class="border-l-4 border-emerald-500 bg-emerald-50 rounded p-3"><b>2º · Desenvolvimento 1:</b> primeiro argumento, com <b>repertório</b> e explicação.</div>
+   <div class="border-l-4 border-amber-500 bg-amber-50 rounded p-3"><b>3º · Desenvolvimento 2:</b> segundo argumento, <b>diferente</b> do primeiro.</div>
+   <div class="border-l-4 border-rose-500 bg-rose-50 rounded p-3"><b>4º · Conclusão:</b> retoma a ideia e apresenta a <b>proposta de intervenção</b>.</div>
+  </div>
+  <p class="text-sm mt-3">Dica: escreva em 3ª pessoa e em linguagem formal. Evite "eu acho", "tipo", "né" e gírias.</p>` },
+ { t: '💡 Tese e repertório', h: `
+  <div class="bg-sky-50 rounded-xl p-3 mb-3 text-sm"><b>Tese</b> é a sua opinião sobre o tema, dita de forma clara. Exemplo: <i>"A invisibilidade do trabalho de cuidado mantém a desigualdade entre homens e mulheres."</i></div>
+  <div class="bg-emerald-50 rounded-xl p-3 mb-3 text-sm"><b>Repertório</b> é um conhecimento de fora do texto que ajuda a provar sua ideia. Precisa ser:
+   <ul class="list-disc pl-5 mt-1"><li><b>Legitimado:</b> vem de fonte confiável;</li><li><b>Pertinente:</b> tem a ver com o tema;</li><li><b>Produtivo:</b> você explica e usa na argumentação.</li></ul></div>
+  <div class="grid grid-cols-2 gap-2 text-sm">
+   <div class="bg-green-50 border border-green-300 rounded-xl p-3"><b>✅ Serve</b><br>dados do IBGE, leis, livros, filósofos, filmes, fatos históricos</div>
+   <div class="bg-red-50 border border-red-300 rounded-xl p-3"><b>❌ Não serve</b><br>"todo mundo sabe", ditados, "vi na internet", história pessoal</div>
+  </div>` },
+ { t: '🔗 Conectivos: ligando as ideias', h: `
+  <p class="mb-2">Conectivos são palavras que ligam uma ideia à outra. Cada um tem um papel. Escolher o errado atrapalha o texto (C4).</p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+   <div class="bg-indigo-50 rounded-xl p-3"><b>Somar ideias:</b><br>além disso, ademais, também</div>
+   <div class="bg-indigo-50 rounded-xl p-3"><b>Contrariar:</b><br>porém, contudo, entretanto</div>
+   <div class="bg-indigo-50 rounded-xl p-3"><b>Explicar a causa:</b><br>pois, porque, já que</div>
+   <div class="bg-indigo-50 rounded-xl p-3"><b>Mostrar a consequência:</b><br>por isso, assim, dessa forma</div>
+   <div class="bg-indigo-50 rounded-xl p-3 sm:col-span-2"><b>Concluir:</b> portanto, diante disso, em suma</div>
+  </div>
+  <p class="text-sm mt-3">Exemplo errado: "Ela estuda muito. <b>Entretanto</b>, tira boas notas." As duas ideias se somam, então o certo é <b>"Por isso"</b>.</p>` },
+ { t: '🛠️ Proposta de intervenção', h: `
+  <p class="mb-2">É a solução que você propõe no último parágrafo. Ela precisa de <b>5 itens</b>:</p>
+  <div class="space-y-2 text-sm">
+   <div class="bg-rose-50 rounded-xl p-2"><b>1. Agente (quem?):</b> o Ministério da Educação, as prefeituras, a mídia...</div>
+   <div class="bg-rose-50 rounded-xl p-2"><b>2. Ação (faz o quê?):</b> ampliar creches públicas.</div>
+   <div class="bg-rose-50 rounded-xl p-2"><b>3. Meio (como?):</b> por meio de verbas federais.</div>
+   <div class="bg-rose-50 rounded-xl p-2"><b>4. Finalidade (para quê?):</b> a fim de dar mais autonomia às mulheres.</div>
+   <div class="bg-rose-50 rounded-xl p-2"><b>5. Detalhamento:</b> explica melhor o agente, a ação ou o meio.</div>
+  </div>
+  <div class="bg-red-50 border border-red-300 rounded-xl p-3 mt-3 text-sm"><b>⚠️ Atenção:</b> propostas que desrespeitam os direitos humanos (por exemplo, punir ou excluir pessoas) zeram a C5. Evite "o governo tem que resolver" sem dizer como.</div>` },
+ { t: '🎮 Como funciona o jogo', h: `
+  <ul class="space-y-2 text-sm">
+   <li class="bg-indigo-50 rounded-xl p-3"><b>Fase 1 · Monte a redação:</b> em 4 passos, escolha o melhor parágrafo (introdução, argumento 1, argumento 2 e proposta).</li>
+   <li class="bg-indigo-50 rounded-xl p-3"><b>Fase 2 · Caça-erros:</b> leia um trecho e descubra qual é o problema (português, tema, repertório, proposta ou conectivo).</li>
+   <li class="bg-indigo-50 rounded-xl p-3"><b>Vidas:</b> você tem 3 ❤️. Cada erro tira uma vida.</li>
+   <li class="bg-indigo-50 rounded-xl p-3"><b>Pontos:</b> cada acerto vale 100, com bônus para acertos seguidos 🔥 e para vidas que sobrarem.</li>
+   <li class="bg-indigo-50 rounded-xl p-3"><b>Explicação:</b> depois de cada resposta, o jogo mostra o motivo. Leia com atenção, é assim que você aprende!</li>
+  </ul>` }
+];
+
+function aula(T) {
+  const s = AULA[T], last = T === AULA.length - 1;
+  app.innerHTML = `<div class="pop bg-white rounded-2xl shadow-xl p-5 sm:p-7">
+    <div class="flex justify-center gap-2 mb-4">${AULA.map((_, i) => `<span class="h-2 w-6 rounded-full ${i === T ? 'bg-indigo-600' : 'bg-slate-300'}"></span>`).join('')}</div>
+    <p class="text-xs text-slate-500 mb-1">Aula rápida · ${T + 1} de ${AULA.length}</p>
+    <h2 class="text-xl font-extrabold mb-3">${s.t}</h2>
+    <div class="text-slate-700 leading-relaxed">${s.h}</div>
+    <div class="flex gap-2 mt-6">
+      <button onclick="${T ? 'aula(' + (T - 1) + ')' : 'home()'}" class="flex-1 bg-slate-200 hover:bg-slate-300 font-bold py-3 rounded-xl">${T ? '⬅ Voltar' : 'Início'}</button>
+      <button onclick="${last ? 'home()' : 'aula(' + (T + 1) + ')'}" class="flex-1 ${last ? 'bg-amber-400 hover:bg-amber-500 text-slate-900' : 'bg-indigo-600 hover:bg-indigo-700 text-white'} font-extrabold py-3 rounded-xl">${last ? '🎮 Ir para o jogo' : 'Próximo ➜'}</button>
+    </div></div>`;
+  window.scrollTo(0, 0);
+}
+
 /* ---------- FASE 1: monte a redação ---------- */
 const BUILD = [
- { step: 'Introdução e Tese', c: 'C2 / C3',
-   q: 'Escolha a introdução que contextualiza o tema e apresenta uma tese clara.',
+ { step: 'Introdução', c: 'C2 / C3', d: 'Uma boa introdução tem o contexto do tema + a sua opinião (tese).',
+   q: 'Qual introdução apresenta o tema e defende uma opinião clara?',
    o: [
-    [`Historicamente, a divisão sexual do trabalho atribuiu às mulheres as tarefas domésticas e o cuidado de crianças, idosos e doentes, sem remuneração nem reconhecimento. No Brasil, essa invisibilidade persiste e perpetua desigualdades, o que exige a atuação conjunta do Estado e da sociedade para ser superada.`, true,
-     'Contextualiza o tema, assume um ponto de vista claro (tese) e anuncia o caminho dos argumentos. Isso atende ao tipo dissertativo-argumentativo (C2) e a um projeto de texto bem definido (C3).'],
-    [`Eu acho que o trabalho de cuidado das mulheres é um problema, mas cada pessoa tem sua opinião e eu respeito todas.`, false,
-     'Não defende uma tese: o texto fica neutro e em tom pessoal, sem projeto de texto. A cartilha do INEP pede um ponto de vista claro, defendido ao longo do texto (C3).'],
-    [`O desemprego é um dos maiores problemas do Brasil, afetando milhões de pessoas e a economia do país.`, false,
-     'Tangencia o tema: fala de desemprego em geral e não do trabalho de cuidado feito por mulheres. Tangenciamento limita bastante a C2, e a fuga total ao tema zera a redação.']
+    [`Desde muito tempo, a sociedade ensina que cuidar da casa, das crianças e dos idosos é tarefa das mulheres, e esse trabalho quase nunca é pago nem reconhecido. No Brasil, isso ainda acontece e aumenta a desigualdade entre homens e mulheres. Por isso, o Estado e a sociedade precisam agir juntos para mudar essa realidade.`, true,
+     'Mostra de onde vem o problema, dá a sua opinião (a tese) e avisa o que vem depois. É isso que a C2 e a C3 pedem.'],
+    [`Eu acho que o trabalho de cuidado das mulheres é um problema, mas cada pessoa pensa de um jeito e eu respeito todas as opiniões.`, false,
+     'Não defende uma ideia: fica "em cima do muro" e usa "eu acho". A redação precisa de uma opinião firme, escrita de forma mais formal (C3).'],
+    [`O desemprego é um dos maiores problemas do Brasil e atinge milhões de pessoas e a economia do país.`, false,
+     'Fala de desemprego, e não do trabalho de cuidado das mulheres. Isso é "tangenciar" o tema (falar de algo parecido). Atrapalha muito a C2. Fugir totalmente do tema zera a redação.']
    ] },
- { step: 'Argumento 1 (repertório)', c: 'C2',
-   q: 'Qual desenvolvimento usa um repertório sociocultural legitimado, pertinente e produtivo?',
+ { step: 'Argumento 1', c: 'C2', d: 'Repertório bom vem de fonte confiável: dado, livro, lei, filme ou fato histórico.',
+   q: 'Qual parágrafo usa um repertório bom e explica o que ele significa?',
    o: [
-    [`Segundo dados do IBGE, as mulheres dedicam, em média, quase o dobro de horas semanais que os homens aos afazeres domésticos e ao cuidado de pessoas. Tal desigualdade mostra que a sobrecarga feminina decorre de uma construção social, e não de aptidão natural, o que restringe o acesso delas ao mercado de trabalho.`, true,
-     'O dado vem de fonte reconhecida (IBGE), é pertinente ao tema e foi usado de forma produtiva: o autor o interpreta e o liga à tese. É isso que a C2 valoriza.'],
-    [`Como diz o ditado popular, "mulher é quem sabe cuidar da casa", e por isso elas já estão acostumadas com essas tarefas.`, false,
-     'Ditado popular é senso comum, não repertório legitimado. Além disso, reforça um estereótipo e naturaliza a desigualdade, indo contra a tese.'],
-    [`Vi em um vídeo da internet que muitas mulheres trabalham demais em casa, o que é muito injusto.`, false,
-     'A fonte não é identificada nem verificável e o relato é pessoal. Repertório legitimado exige área do saber, obra, dado oficial ou fato histórico reconhecido.']
+    [`Segundo o IBGE, as mulheres gastam quase o dobro do tempo dos homens com tarefas da casa e com o cuidado de outras pessoas. Isso mostra que a sobrecarga delas vem da forma como a sociedade foi construída, e não de uma "natureza" feminina. Com isso, sobra menos tempo para estudar e trabalhar fora.`, true,
+     'Usa um dado de fonte confiável (IBGE), ligado ao tema, e explica o que ele significa. Isso é repertório legitimado usado de forma produtiva (C2).'],
+    [`Como diz o ditado, "mulher é quem sabe cuidar da casa", então elas já estão acostumadas com essas tarefas.`, false,
+     'Ditado é senso comum, não é repertório legitimado. Ainda reforça um preconceito e vai contra a sua própria tese.'],
+    [`Vi em um vídeo na internet que muitas mulheres trabalham demais em casa, e isso é muito injusto.`, false,
+     'Não diz qual é a fonte e conta algo pessoal. Repertório bom vem de livro, filme, lei, dado oficial, pesquisa ou fato histórico conhecido.']
    ] },
- { step: 'Argumento 2 (aprofundamento)', c: 'C3 / C4',
-   q: 'Qual parágrafo traz uma ideia nova, bem encadeada e com relação de causa e consequência?',
+ { step: 'Argumento 2', c: 'C3 / C4', d: 'O 2º argumento traz uma ideia NOVA e explica causa e consequência.',
+   q: 'Qual parágrafo traz uma ideia nova e bem explicada?',
    o: [
-    [`Além disso, a invisibilidade desse trabalho é agravada pela ausência de políticas públicas, como creches em tempo integral e serviços de cuidado para idosos. Sem esse suporte, o Estado transfere às famílias, sobretudo às mulheres, uma responsabilidade que deveria ser coletiva, o que reforça o ciclo de dependência econômica e de desigualdade de gênero.`, true,
-     'Apresenta um novo argumento, explica a causa (falta de políticas públicas) e a consequência (dependência e desigualdade) e usa o conectivo "Além disso" para a progressão (C3 e C4).'],
-    [`As mulheres realizam muitas tarefas domésticas, e essas tarefas são realizadas por mulheres em grande quantidade, o que mostra que elas trabalham muito em casa.`, false,
-     'É circular: repete o argumento 1 com outras palavras e não avança. Sem progressão de ideias há prejuízo à C3 e à C4.'],
-    [`Ademais, o Brasil possui grande extensão territorial e uma rica diversidade cultural, o que torna o país único.`, false,
-     'Informação sem relação com a tese. Usar "Ademais" não disfarça o problema: dados soltos e irrelevantes enfraquecem a organização do argumento (C3).']
+    [`Além disso, esse trabalho continua invisível porque faltam políticas públicas, como creches em tempo integral e cuidado para idosos. Sem esse apoio, o Estado deixa o peso para as famílias, principalmente para as mulheres, o que as deixa dependentes de dinheiro e mantém a desigualdade de gênero.`, true,
+     'Traz uma ideia nova (falta de políticas públicas), explica causa e consequência e usa "Além disso" para ligar com o parágrafo anterior (C3 e C4).'],
+    [`As mulheres fazem muitas tarefas em casa, e essas tarefas são feitas pelas mulheres em grande quantidade, o que mostra que elas trabalham muito em casa.`, false,
+     'Repete o que já foi dito, só com outras palavras. O texto "anda em círculos" e não avança (C3 e C4).'],
+    [`Ademais, o Brasil é um país muito grande e tem uma cultura muito rica, o que o torna único.`, false,
+     'É verdade, mas não tem ligação com a tese. Usar "Ademais" não resolve: ideia solta e sem relação enfraquece o texto (C3).']
    ] },
- { step: 'Proposta de Intervenção', c: 'C5',
-   q: 'Qual conclusão traz uma proposta com os cinco elementos (agente, ação, meio, finalidade e detalhamento) e respeita os direitos humanos?',
+ { step: 'Proposta de intervenção', c: 'C5', d: 'Quem? Faz o quê? Como? Para quê? Algum detalhe? E sem ferir os direitos humanos.',
+   q: 'Qual conclusão tem os 5 itens da proposta e respeita os direitos humanos?',
    o: [
-    [`Portanto, cabe ao Ministério do Desenvolvimento e Assistência Social, em parceria com os municípios, ampliar a rede pública de creches e centros de cuidado por meio de verbas federais e convênios locais, a fim de redistribuir a responsabilidade do cuidado e garantir autonomia às mulheres. Além disso, campanhas midiáticas devem incentivar a divisão igualitária das tarefas domésticas, para combater estereótipos de gênero.`, true,
-     'Agente (Ministério e municípios), ação (ampliar creches e centros de cuidado), meio (verbas e convênios), finalidade (redistribuir o cuidado, garantir autonomia) e detalhamento (campanhas). Proposta completa e respeitosa: nota 200 na C5.'],
+    [`Portanto, o Ministério do Desenvolvimento e Assistência Social, junto com as prefeituras, deve ampliar as creches e os centros de cuidado públicos, usando verbas federais e convênios locais, para dividir melhor essa responsabilidade e dar mais autonomia às mulheres. Além disso, campanhas na TV e nas redes devem incentivar a divisão igual das tarefas da casa, para combater o preconceito de gênero.`, true,
+     'Tem os 5 itens: quem (Ministério e prefeituras), o quê (ampliar creches e centros), como (verbas e convênios), para quê (dividir a responsabilidade e dar autonomia) e detalhe (campanhas). Também respeita os direitos humanos (C5).'],
     [`Portanto, o governo deve resolver esse problema o mais rápido possível, pois as mulheres merecem respeito.`, false,
-     'Agente genérico ("o governo"), nenhuma ação concreta, nenhum meio e nenhum detalhamento. Proposta vaga e pouco articulada à discussão rende nota baixa na C5.'],
-    [`Portanto, é necessário que as mulheres abram mão de seus empregos para se dedicar integralmente aos cuidados da casa, solucionando o problema.`, false,
-     'Desrespeita os direitos humanos e contradiz a tese. Proposta que fere os direitos humanos zera a C5, independentemente do restante.']
+     '"O governo" é muito genérico e a proposta não diz o que fazer, como fazer nem para quê. Proposta vaga tem nota baixa na C5.'],
+    [`Portanto, as mulheres devem largar seus empregos para cuidar só da casa, e assim o problema acaba.`, false,
+     'Fere os direitos humanos (tira a liberdade das mulheres) e contradiz a tese. Desrespeitar os direitos humanos zera a C5.']
    ] }
 ];
 
 /* ---------- FASE 2: caça-erros ---------- */
-const ERR = { g: 'Desvio gramatical (C1)', f: 'Fuga ao tema (C2)', r: 'Falta de repertório legitimado (C2)', p: 'Proposta de intervenção incompleta (C5)', c: 'Falha de coesão (C4)' };
+const ERR = { g: 'Erro de português (C1)', f: 'Fuga do tema (C2)', r: 'Falta de repertório (C2)', p: 'Proposta incompleta (C5)', c: 'Conectivo ou ligação errada (C4)' };
 const HUNT = [
- { c: 'C1', a: 'g', t: `Existe diversas mulheres que acumulam jornadas de trabalho remunerado e doméstico, e a sociedade pouco reconhece esse esforço.`,
-   w: 'Erro de concordância verbal: o sujeito "diversas mulheres" está no plural e exige "Existem". Desvios gramaticais reduzem a nota da C1.' },
- { c: 'C2', a: 'f', t: `O uso excessivo de celulares entre adolescentes tem prejudicado o rendimento escolar e as relações familiares, exigindo maior controle dos pais sobre as telas.`,
-   w: 'O parágrafo não trata do trabalho de cuidado das mulheres. Desenvolver outro assunto é fuga ao tema, e a fuga total leva a redação à nota zero.' },
- { c: 'C2', a: 'r', t: `Todo mundo sabe que a mulher sempre cuidou da casa, como minha avó já dizia, e por isso essa realidade dificilmente vai mudar.`,
-   w: 'Apoia-se em senso comum e experiência pessoal, sem repertório legitimado (dado, obra, fato histórico). Também naturaliza a desigualdade em vez de problematizá-la.' },
- { c: 'C5', a: 'p', t: `Diante do exposto, o governo precisa tomar atitudes para resolver a sobrecarga feminina.`,
-   w: 'Há um agente genérico, mas faltam ação específica, meio, finalidade e detalhamento. A C5 avalia os cinco elementos.' },
- { c: 'C4', a: 'c', t: `A sobrecarga feminina limita o acesso ao emprego formal. Entretanto, ela também prejudica a saúde mental das mulheres.`,
-   w: '"Entretanto" indica oposição, mas as duas ideias se somam. O conectivo adequado seria "Além disso" ou "Ademais". Conectivo inadequado compromete a C4.' },
- { c: 'C1', a: 'g', t: `A sociedade deve dar um basta à esse problema, que persiste há séculos.`,
-   w: 'Erro de crase: não se usa crase antes de pronome demonstrativo masculino ("esse"). O correto é "a esse problema" (C1).' }
+ { c: 'C1', a: 'g', t: `Existe diversas mulheres que fazem trabalho pago e trabalho doméstico ao mesmo tempo, e a sociedade pouco reconhece esse esforço.`,
+   w: 'Erro de concordância: "mulheres" está no plural, então o certo é "Existem". Erros de português diminuem a nota da C1.' },
+ { c: 'C2', a: 'f', t: `O uso exagerado do celular entre adolescentes tem piorado as notas na escola e o convívio em família, e os pais precisam controlar mais o tempo de tela.`,
+   w: 'O texto não fala do trabalho de cuidado das mulheres. Falar de outro assunto é fugir do tema, e fugir totalmente do tema zera a redação.' },
+ { c: 'C2', a: 'r', t: `Todo mundo sabe que a mulher sempre cuidou da casa, como minha avó dizia, e por isso essa situação dificilmente vai mudar.`,
+   w: 'Usa "todo mundo sabe" e a opinião da avó, que são senso comum e experiência pessoal. Falta repertório legitimado, como dado, livro, lei ou fato histórico (C2).' },
+ { c: 'C5', a: 'p', t: `Diante disso, o governo precisa tomar atitudes para resolver a sobrecarga das mulheres.`,
+   w: 'O agente é genérico e falta quase tudo: qual ação, como fazer, para quê e algum detalhe. A C5 pede os 5 itens.' },
+ { c: 'C4', a: 'c', t: `A sobrecarga das mulheres dificulta o acesso ao emprego formal. Entretanto, ela também prejudica a saúde mental delas.`,
+   w: '"Entretanto" mostra oposição, mas as duas ideias se somam. O certo seria "Além disso". Conectivo errado prejudica a C4.' },
+ { c: 'C1', a: 'g', t: `A sociedade deve dar um basta à esse problema, que existe há séculos.`,
+   w: 'Erro de crase: não se usa crase antes de "esse". O certo é "a esse problema" (C1).' }
 ];
 
 const QS = [
- ...BUILD.map((b, i) => ({ ph: 1, tag: `Fase 1 · Passo ${i + 1}/4: ${b.step}`, c: b.c, q: b.q, o: sh(b.o), build: true })),
- ...HUNT.map((h, i) => ({ ph: 2, tag: `Fase 2 · Caça-erros ${i + 1}/${HUNT.length}`, c: h.c, q: 'Qual é o principal problema deste trecho de redação?', txt: h.t,
-   o: Object.keys(ERR).map(k => [ERR[k], k === h.a, k === h.a ? h.w : 'Não é este o problema principal. ' + 'O erro real: ' + ERR[h.a] + '.']) }))
+ ...BUILD.map((b, i) => ({ tag: `Fase 1 · Passo ${i + 1} de 4: ${b.step}`, c: b.c, d: b.d, q: b.q, o: sh(b.o), build: true })),
+ ...HUNT.map((h, i) => ({ tag: `Fase 2 · Caça-erros ${i + 1} de ${HUNT.length}`, c: h.c, d: 'Procure: erro de português, assunto errado, ideia sem fonte, proposta incompleta ou conectivo errado.',
+   q: 'Qual é o principal problema deste trecho?', txt: h.t,
+   o: Object.keys(ERR).map(k => [ERR[k], k === h.a, k === h.a ? h.w : 'Não é o principal problema deste trecho. O correto era: ' + ERR[h.a] + '. ' + h.w]) }))
 ];
 
 let S = null;
@@ -114,25 +197,20 @@ function home() {
   S = null;
   app.innerHTML = `<div class="pop bg-white rounded-2xl shadow-xl p-5 sm:p-7">
     <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-3 mb-4 text-sm"><b>Tema da missão:</b> ${TEMA}.</div>
-    <div class="grid grid-cols-5 gap-1 text-center text-xs mb-4">
-      ${[['C1', 'Norma culta'], ['C2', 'Tema e repertório'], ['C3', 'Argumentação'], ['C4', 'Coesão'], ['C5', 'Proposta']].map(c => `<div class="rounded-lg bg-indigo-600 text-white py-2"><b>${c[0]}</b><br><span class="opacity-80">${c[1]}</span></div>`).join('')}
-    </div>
-    <ul class="text-sm text-slate-600 space-y-1 mb-4 list-disc pl-5">
-      <li><b>Fase 1:</b> monte a redação ideal escolhendo o melhor parágrafo em cada etapa.</li>
-      <li><b>Fase 2:</b> caça-erros — identifique o problema de cada trecho.</li>
-      <li>Você tem <b>3 vidas</b> ❤️. Acertos em sequência dão bônus de pontos. Cada resposta traz o motivo, segundo os critérios do INEP.</li>
-    </ul>
+    <p class="text-sm text-slate-600 mb-4">Primeira vez fazendo redação? Comece pela <b>aula rápida</b> (2 minutos). Depois é só jogar e treinar!</p>
     <label class="block text-sm font-semibold mb-1" for="nome">Seu nome no ranking</label>
-    <input id="nome" maxlength="20" placeholder="Ex.: Maria S." class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 mb-3 focus:outline-none focus:border-indigo-500">
-    <button onclick="start()" class="w-full bg-amber-400 hover:bg-amber-500 text-slate-900 font-extrabold py-3 rounded-xl text-lg">🚀 Começar a jornada</button>
-    <h2 class="font-bold mt-6 mb-2">🏅 Ranking (neste navegador)</h2>${rankHTML()}
+    <input id="nome" maxlength="20" value="${esc(NOME)}" placeholder="Ex.: Maria S." class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 mb-3 focus:outline-none focus:border-indigo-500">
+    <button onclick="NOME=$('#nome').value;aula(0)" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold py-3 rounded-xl text-lg mb-2">📖 Fazer a aula rápida (recomendado)</button>
+    <button onclick="start()" class="w-full bg-amber-400 hover:bg-amber-500 text-slate-900 font-extrabold py-3 rounded-xl text-lg">🚀 Começar o jogo</button>
+    <h2 class="font-bold mt-6 mb-2">🏅 Ranking (neste aparelho)</h2>${rankHTML()}
     <button onclick="if(confirm('Apagar todo o ranking?')){setRank([]);home()}" class="text-xs text-slate-400 hover:text-red-500 mt-2">Limpar ranking</button>
   </div>`;
 }
 
 function start() {
-  const n = ($('#nome').value || '').trim() || 'Anônimo';
-  S = { n, i: 0, pts: 0, lives: 3, streak: 0, hit: 0, essay: [], lock: false };
+  NOME = ($('#nome').value || '').trim();
+  S = { n: NOME || 'Anônimo', i: 0, pts: 0, lives: 3, streak: 0, hit: 0, essay: [], lock: false };
+  QS.forEach(q => { q.o = sh(q.o); });
   ask();
 }
 
@@ -146,11 +224,13 @@ function ask() {
     <div class="w-full bg-slate-200 rounded-full h-3 mb-1"><div class="bg-gradient-to-r from-amber-400 to-green-500 h-3 rounded-full transition-all" style="width:${(S.i / QS.length) * 100}%"></div></div>
     <p class="text-xs text-slate-500 mb-4">Questão ${S.i + 1} de ${QS.length}</p>
     <span class="inline-block text-xs font-bold bg-indigo-100 text-indigo-700 rounded-full px-3 py-1 mb-2">${q.tag} · ${q.c}</span>
-    <h2 class="font-bold text-lg mb-3">${q.q}</h2>
+    <h2 class="font-bold text-lg mb-2">${q.q}</h2>
+    <p class="text-xs bg-sky-50 border border-sky-200 rounded-lg p-2 mb-3">💡 <b>Dica:</b> ${q.d}</p>
     ${q.txt ? `<blockquote class="bg-amber-50 border-l-4 border-amber-400 rounded p-3 mb-3 italic">“${esc(q.txt)}”</blockquote>` : ''}
     <div class="space-y-2">${q.o.map((o, k) => `<button id="o${k}" onclick="pick(${k})" class="opt w-full text-left border-2 border-slate-200 rounded-xl p-3 text-sm bg-white">${esc(o[0])}</button>`).join('')}</div>
     <div id="fb"></div>
   </div>`;
+  window.scrollTo(0, 0);
 }
 
 function pick(k) {
@@ -163,12 +243,12 @@ function pick(k) {
     S.streak++; S.hit++;
     const bonus = Math.min(S.streak - 1, 4) * 25; S.pts += 100 + bonus;
     if (q.build) S.essay.push(o[0]);
-    msg = `<div class="bg-green-100 border border-green-400 rounded-xl p-3"><b>✅ Correto! +${100 + bonus} pts</b><p class="text-sm mt-1">${esc(o[2])}</p></div>`;
+    msg = `<div class="bg-green-100 border border-green-400 rounded-xl p-3"><b>✅ Muito bem! +${100 + bonus} pontos</b><p class="text-sm mt-1"><b>Por quê?</b> ${esc(o[2])}</p></div>`;
   } else {
     S.streak = 0; S.lives--;
     $('#o' + k).className = 'w-full text-left border-2 border-red-500 bg-red-50 rounded-xl p-3 text-sm';
-    msg = `<div class="bg-red-100 border border-red-400 rounded-xl p-3"><b>❌ Não foi dessa vez. −1 vida</b><p class="text-sm mt-1">${esc(o[2])}</p></div>` +
-      (q.build ? `<div class="bg-green-100 border border-green-400 rounded-xl p-3 mt-2"><b>Alternativa correta:</b><p class="text-sm mt-1">${esc(q.o[right][2])}</p></div>` : '');
+    msg = `<div class="bg-red-100 border border-red-400 rounded-xl p-3"><b>❌ Não foi dessa vez. Você perdeu 1 vida.</b><p class="text-sm mt-1"><b>Por quê?</b> ${esc(o[2])}</p></div>` +
+      (q.build ? `<div class="bg-green-100 border border-green-400 rounded-xl p-3 mt-2"><b>A resposta certa era a verde.</b><p class="text-sm mt-1"><b>Por quê?</b> ${esc(q.o[right][2])}</p></div>` : '');
   }
   const last = S.lives <= 0 || S.i >= QS.length - 1;
   $('#fb').innerHTML = `<div class="pop mt-4">${msg}<button onclick="next()" class="mt-3 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl">${last ? 'Ver resultado 🏁' : 'Próxima ➜'}</button></div>`;
@@ -184,23 +264,29 @@ function end() {
   const id = Date.now();
   const r = getRank(); r.push({ id, n: S.n, s: S.pts, d: new Date().toLocaleDateString('pt-BR') });
   r.sort((a, b) => b.s - a.s); setRank(r.slice(0, 10));
-  const titulo = over ? '📝 Redação rascunhada: tente novamente!' : pct === 1 ? '🏆 Nota 1000 — Mestre da Redação!' : pct >= .8 ? '🥇 Candidato(a) a nota 900+' : pct >= .6 ? '🥈 Quase lá: revise as competências' : '🥉 Bom começo, continue treinando';
+  const titulo = over ? '📝 Acabaram as vidas. Tente de novo!' : pct === 1 ? '🏆 Nota 1000 — Mestre da Redação!' : pct >= .8 ? '🥇 Você está perto da nota 900!' : pct >= .6 ? '🥈 Quase lá! Revise a aula e tente de novo' : '🥉 Bom começo! Continue treinando';
   app.innerHTML = `<div class="pop bg-white rounded-2xl shadow-xl p-5 sm:p-7 text-center">
     <h2 class="text-2xl font-extrabold mb-1">${titulo}</h2>
-    <p class="text-slate-600 mb-4">${esc(S.n)}, você acertou <b>${S.hit}/${QS.length}</b>${over ? ' e ficou sem vidas.' : ' com ' + S.lives + ' vida(s) restante(s) (+' + bonusVidas + ' pts).'}</p>
+    <p class="text-slate-600 mb-4">${esc(S.n)}, você acertou <b>${S.hit} de ${QS.length}</b>${over ? ' e ficou sem vidas.' : ' e ainda tinha ' + S.lives + ' vida(s) (+' + bonusVidas + ' pontos).'}</p>
     <div class="grid grid-cols-2 gap-3 mb-4">
       <div class="bg-indigo-50 rounded-xl p-3"><div class="text-3xl font-extrabold text-indigo-700">${S.pts}</div><div class="text-xs">pontos no jogo</div></div>
-      <div class="bg-amber-50 rounded-xl p-3"><div class="text-3xl font-extrabold text-amber-600">${nota}</div><div class="text-xs">nota ilustrativa (0–1000)</div></div>
+      <div class="bg-amber-50 rounded-xl p-3"><div class="text-3xl font-extrabold text-amber-600">${nota}</div><div class="text-xs">nota de treino (0 a 1000)</div></div>
     </div>
-    ${S.essay.length ? `<details class="text-left bg-slate-50 rounded-xl p-3 mb-4"><summary class="font-bold cursor-pointer">📄 Sua redação montada (${S.essay.length}/4 parágrafos)</summary><div class="space-y-3 mt-3 text-sm">${S.essay.map(p => `<p class="indent-6 text-justify">${esc(p)}</p>`).join('')}</div></details>` : ''}
+    ${S.essay.length ? `<details class="text-left bg-slate-50 rounded-xl p-3 mb-4"><summary class="font-bold cursor-pointer">📄 Sua redação montada (${S.essay.length} de 4 parágrafos)</summary><div class="space-y-3 mt-3 text-sm">${S.essay.map(p => `<p class="indent-6 text-justify">${esc(p)}</p>`).join('')}</div></details>` : ''}
     <h3 class="font-bold text-left mb-2">🏅 Ranking</h3><div class="text-left">${rankHTML(id)}</div>
-    <div class="flex gap-2 mt-5">
-      <button onclick="S.n&&restart()" class="flex-1 bg-amber-400 hover:bg-amber-500 font-extrabold py-3 rounded-xl">🔁 Jogar de novo</button>
-      <button onclick="home()" class="flex-1 bg-slate-200 hover:bg-slate-300 font-bold py-3 rounded-xl">Início</button>
+    <div class="flex flex-wrap gap-2 mt-5">
+      <button onclick="restart()" class="flex-1 min-w-[140px] bg-amber-400 hover:bg-amber-500 font-extrabold py-3 rounded-xl">🔁 Jogar de novo</button>
+      <button onclick="aula(0)" class="flex-1 min-w-[140px] bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl">📖 Rever a aula</button>
+      <button onclick="home()" class="flex-1 min-w-[140px] bg-slate-200 hover:bg-slate-300 font-bold py-3 rounded-xl">Início</button>
     </div></div>`;
+  window.scrollTo(0, 0);
 }
 
-function restart() { S = { n: S.n, i: 0, pts: 0, lives: 3, streak: 0, hit: 0, essay: [], lock: false }; QS.forEach(q => { q.o = sh(q.o); }); ask(); }
+function restart() {
+  S = { n: S.n, i: 0, pts: 0, lives: 3, streak: 0, hit: 0, essay: [], lock: false };
+  QS.forEach(q => { q.o = sh(q.o); });
+  ask();
+}
 
 home();
 </script>
